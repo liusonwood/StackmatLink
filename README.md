@@ -88,4 +88,5 @@ MIT License. 欢迎提交 PR 优化协议逻辑！
 
 ---
 
-"This project was conceptualized by me and implemented in 2 hours with the help of AI pair programming." (本项目由我构思，并在 AI 结对编程的辅助下耗时两小时实现。)
+This project was conceptualized by me and implemented in 2 hours with the help of AI pair programming.
+本项目由我构思，并在 AI 结对编程的辅助下耗时两小时实现。
