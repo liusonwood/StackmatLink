@@ -85,3 +85,7 @@ MIT License. 欢迎提交 PR 优化协议逻辑！
 ### 鸣谢
 - `NimBLE-Arduino` 库开发者。
 - [`csTimer`](https://github.com/cs0x7f/cstimer) 项目及其 [GAN 计时器驱动代码](https://github.com/cs0x7f/cstimer/blob/master/src/js/hardware/gantimer.js)参考。
+
+
+
+"This project was conceptualized by me and implemented in 2 hours with the help of AI pair programming." (本项目由我构思，并在 AI 结对编程的辅助下耗时两小时实现。)
