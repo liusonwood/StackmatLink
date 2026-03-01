@@ -1,6 +1,12 @@
+<div align="center">
+
 # StackmatLink
 
+🌐 [English](./README_EN.md) | [简体中文](./README.md)
 
+</div>
+
+---
 # Stackmat计时器 -> BLE 蓝牙转换器
 
 这是一个基于 **ESP32-S3** 的开源项目，旨在将 **GAN Halo (星环)** 计时器通过音频口输出的模拟 Stackmat 信号，实时转换为 **GAN Smart Timer 蓝牙协议**。
