@@ -1,16 +1,49 @@
 #include <NimBLEDevice.h>
 #include <ctype.h>
 
-/*
- * 项目：GAN Halo -> GAN-Timer 蓝牙转换器 (强制连接版)
- * 核心修改：不再依赖 onConnect 回调，直接轮询连接数
- */
 
 #define RX_PIN 4
 #define STACKMAT_LEN 10 
 #define BAUDRATE 1200
 #define SERVICE_UUID        "0000fff0-0000-1000-8000-00805f9b34fb"
 #define CHARACTERISTIC_UUID "0000fff5-0000-1000-8000-00805f9b34fb"
+
+#include <Adafruit_NeoPixel.h>
+#define PIN        48
+#define NUMPIXELS   1
+Adafruit_NeoPixel strip(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
+unsigned long ledTurnOffTime = 0;
+bool isLedOn = false;
+void handleStatusLED(int state) {
+  uint32_t color = strip.Color(0, 0, 0); // 默认关闭
+  bool permanent = false; // 是否常亮（不触发自动熄灭）
+
+  switch (state) {
+    case 3: // GAN_RUNNING
+      color = strip.Color(0, 0, 40);   // 蓝色（计时中）
+      permanent = true;
+      break;
+    case 5: // GAN_RESET
+      color = strip.Color(50, 50, 30); // 白色
+      permanent = false;               // 闪烁模式
+      break;
+    default:
+      color = strip.Color(0, 0, 0);
+      permanent = false;
+      break;
+  }
+
+  strip.setPixelColor(0, color);
+  strip.show();
+
+  if (!permanent) {
+    ledTurnOffTime = millis() + 80; // 80ms 后熄灭（进入等待状态）
+    isLedOn = true;
+  } else {
+    isLedOn = false; // 常亮状态，不需要自动关灯计时器
+  }
+}
+
 
 enum GanState {
     GAN_DISCONNECT = 0, GAN_GET_SET = 1, GAN_HANDS_OFF = 2,
@@ -146,6 +179,13 @@ void processStackmatPacket(uint8_t* b) {
         currentTimer.needsNotify = true;
         portEXIT_CRITICAL(&dataMux);
         Serial.printf("Signal: State %d -> %d\n", lastInferredState, newState);
+
+        strip.setPixelColor(0, strip.Color(0, 50, 20)); // 青色，低亮度
+        // 加入灯光控制：仅在状态切换时执行
+        if (newState != lastInferredState) {
+            handleStatusLED(newState);
+        }
+
     }
 
     lastTotalMs = currentTotalMs;
@@ -186,6 +226,17 @@ void setup() {
     Serial.begin(115200);
     xTaskCreatePinnedToCore(bleTask, "BLE_Task", 4096, NULL, 1, NULL, 0);
     xTaskCreatePinnedToCore(stackmatTask, "Stackmat_Task", 4096, NULL, 1, NULL, 1);
+    strip.begin();
+    strip.show();
 }
 
-void loop() { vTaskDelay(1000); }
+void loop() {
+    
+    vTaskDelay(100); 
+
+    if (isLedOn && millis() > ledTurnOffTime) {
+    strip.setPixelColor(0, strip.Color(0, 0, 0)); // 关灯
+    strip.show();
+    isLedOn = false;
+  }    
+}
