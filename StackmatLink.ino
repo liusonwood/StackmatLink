@@ -85,6 +85,8 @@ class ServerCallbacks : public NimBLEServerCallbacks {
     }
 };
 
+TaskHandle_t xBleTaskHandle = NULL;
+
 void bleTask(void* pvParameters) {
     NimBLEDevice::init("GAN-Timer");
     NimBLEDevice::setPower(ESP_PWR_LVL_P9);
@@ -105,8 +107,8 @@ void bleTask(void* pvParameters) {
     uint8_t pkgIndex = 0;
 
     while (true) {
-        // 核心修改：直接查询连接的客户端数量
-        size_t connectedCount = pServer->getConnectedCount();
+        // Wait for notification from stackmatTask
+        ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 
         if (currentTimer.needsNotify) {
             portENTER_CRITICAL(&dataMux);
@@ -122,18 +124,13 @@ void bleTask(void* pvParameters) {
             uint16_t crc = crc16ccitt(&packet[2], 6);
             packet[8] = crc & 0xFF; packet[9] = (crc >> 8) & 0xFF;
 
-            // 只要有客户端连接，就发送！
+            size_t connectedCount = pServer->getConnectedCount();
             if (connectedCount > 0) {
                 pNotifyCharacteristic->setValue(packet, 10);
-                pNotifyCharacteristic->notify(); // 发送 notify
-                Serial.printf("BLE TX (Clients: %d): State %d Time %d:%02d.%03d\n", 
-                    connectedCount, packet[3], packet[4], packet[5], (packet[7] << 8 | packet[6]));
-            } else {
-                Serial.printf("BLE DROP (Clients: 0): State %d Time %d:%02d.%03d\n", 
-                    packet[3], packet[4], packet[5], (packet[7] << 8 | packet[6]));
+                pNotifyCharacteristic->notify();
+                // Serial.printf is slow, removed or conditional for speed
             }
         }
-        vTaskDelay(pdMS_TO_TICKS(10));
     }
 }
 
@@ -147,7 +144,6 @@ void processStackmatPacket(uint8_t* b) {
 
     static uint32_t lastTotalMs = 0;
     static uint8_t lastInferredState = GAN_RESET;
-    static uint8_t lastHeader = 0;
 
     uint8_t m = b[1] - '0';
     uint8_t s = (b[2] - '0') * 10 + (b[3] - '0');
@@ -168,9 +164,15 @@ void processStackmatPacket(uint8_t* b) {
         }
     }
 
+    // 核心逻辑恢复：
+    // 1. 状态发生切换时通知（例如：HANDS_OFF -> RUNNING 发送一次开始信号）
+    // 2. 状态为 STOPPED 且时间有更新时通知（发送最终成绩）
     bool shouldNotify = false;
-    if (newState != lastInferredState) shouldNotify = true;
-    else if (newState == GAN_STOPPED && currentTotalMs != lastTotalMs) shouldNotify = true;
+    if (newState != lastInferredState) {
+        shouldNotify = true;
+    } else if (newState == GAN_STOPPED && currentTotalMs != lastTotalMs) {
+        shouldNotify = true;
+    }
 
     if (shouldNotify) {
         portENTER_CRITICAL(&dataMux);
@@ -178,19 +180,15 @@ void processStackmatPacket(uint8_t* b) {
         currentTimer.state = newState;
         currentTimer.needsNotify = true;
         portEXIT_CRITICAL(&dataMux);
-        Serial.printf("Signal: State %d -> %d\n", lastInferredState, newState);
-
-        strip.setPixelColor(0, strip.Color(0, 50, 20)); // 青色，低亮度
-        // 加入灯光控制：仅在状态切换时执行
+        if (xBleTaskHandle != NULL) xTaskNotifyGive(xBleTaskHandle);
+        
         if (newState != lastInferredState) {
             handleStatusLED(newState);
         }
-
     }
 
     lastTotalMs = currentTotalMs;
     lastInferredState = newState;
-    lastHeader = b[0];
 }
 
 void stackmatTask(void* pvParameters) {
@@ -198,34 +196,68 @@ void stackmatTask(void* pvParameters) {
     StackmatSerial.begin(BAUDRATE, SERIAL_8N1, RX_PIN, -1, inverted);
     uint8_t buf[STACKMAT_LEN];
     int count = 0;
+    unsigned long lastByteTime = 0;
     unsigned long lastPacketTime = millis();
+    
     while (true) {
-        while (StackmatSerial.available()) {
-            uint8_t c = StackmatSerial.read();
-            if (count == 0) {
-                if (c == 'A' || c == 'S' || c == ' ' || c == 'L' || c == 'R' || c == 'C' || c == 'I') buf[count++] = c;
-            } else buf[count++] = c;
-            if (count == STACKMAT_LEN) {
-                processStackmatPacket(buf);
-                count = 0;
-                lastPacketTime = millis();
+        if (StackmatSerial.available()) {
+            while (StackmatSerial.available()) {
+                uint8_t c = StackmatSerial.read();
+                unsigned long now = millis();
+                
+                // 1. 基于时间间隔的同步：1200波特率下每字节约8.3ms，15ms是安全的间隔
+                if (now - lastByteTime > 15 && count > 0) {
+                    count = 0; 
+                }
+                lastByteTime = now;
+
+                if (count == 0) {
+                    // 2. 预测性处理：识别到 Header 立即推断部分状态
+                    if (c == 'A' || c == 'S' || c == ' ' || c == 'L' || c == 'R' || c == 'C' || c == 'I') {
+                        buf[count++] = c;
+                        
+                        // 对于能够从 Header 直接确定的状态，立即预通知蓝牙
+                        uint8_t predictedState = 255;
+                        if (c == 'A') predictedState = GAN_GET_SET;
+                        else if (c == 'L' || c == 'R' || c == 'C') predictedState = GAN_HANDS_ON;
+                        else if (c == 'S') predictedState = GAN_STOPPED;
+                        
+                        if (predictedState != 255 && predictedState != currentTimer.state) {
+                            portENTER_CRITICAL(&dataMux);
+                            currentTimer.state = predictedState;
+                            currentTimer.needsNotify = true;
+                            portEXIT_CRITICAL(&dataMux);
+                            if (xBleTaskHandle != NULL) xTaskNotifyGive(xBleTaskHandle);
+                        }
+                    }
+                } else {
+                    buf[count++] = c;
+                    if (count == STACKMAT_LEN) {
+                        processStackmatPacket(buf);
+                        count = 0;
+                        lastPacketTime = now;
+                    }
+                }
             }
+        } else {
+            vTaskDelay(1);
         }
+
         if (millis() - lastPacketTime > 3000) {
             inverted = !inverted;
             StackmatSerial.begin(BAUDRATE, SERIAL_8N1, RX_PIN, -1, inverted);
-            Serial.printf(">> [Signal] Invert: %s\n", inverted ? "ON" : "OFF");
             lastPacketTime = millis();
             count = 0;
         }
-        vTaskDelay(1);
     }
 }
 
 void setup() {
     Serial.begin(115200);
-    xTaskCreatePinnedToCore(bleTask, "BLE_Task", 4096, NULL, 1, NULL, 0);
-    xTaskCreatePinnedToCore(stackmatTask, "Stackmat_Task", 4096, NULL, 1, NULL, 1);
+    // BLE Task on Core 0, Priority 2 (Higher)
+    xTaskCreatePinnedToCore(bleTask, "BLE_Task", 4096, NULL, 2, &xBleTaskHandle, 0);
+    // Stackmat Task on Core 1, Priority 3 (Highest on this core)
+    xTaskCreatePinnedToCore(stackmatTask, "Stackmat_Task", 4096, NULL, 3, NULL, 1);
     strip.begin();
     strip.show();
 }
