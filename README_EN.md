@@ -25,7 +25,7 @@ With this project, you can bridge any standard non-Bluetooth Stackmat timer to *
 
 ## 🛠 Hardware Requirements
 
-- **MCU**: ESP32-S3 (Tested on N16R8, but compatible with all S3 variants).
+- **MCU**: ESP32-S3 (Tested on N16R8, PCB uses esp32-s3-supermini，but compatible with all S3 variants).
 - **Signal Conditioning**: LM393 Voltage Comparator Module.
 - **Interface**: 3.5mm Audio Jack (Tip: Signal, Sleeve: GND).
 - **Electronic Components**: 
