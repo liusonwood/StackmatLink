@@ -75,8 +75,8 @@
     - `Gerber_PCB1_...`: 用于打样的 PCB Gerber 文件。
     - `ProPrj_...`: PCB 项目工程文件。
 - **3D 打印外壳** (`hardware/Case/`)：
-    - `stackmatlinkcaseprint final-case.001.stl`, `.002.stl`: 导出好的 3D 打印模型。
-    - `stackmatlinkcaseprint final.blend`: 外壳的 Blender 源文件。
+    - `stackmatlink-case-print-blender-case.001.stl`, `.002.stl`: 导出好的 3D 打印模型。
+    - `stackmatlink-case-print-blender.blend`: 外壳的 Blender 源文件。
 - **接线参考** (`hardware/Wiring/`)：
     - `Wiringconnection.png`: 详细的电路连接示意图。
 

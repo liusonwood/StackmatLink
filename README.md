@@ -76,8 +76,8 @@ You can find all design files in the `hardware/` directory:
     - `Gerber_PCB1_...`: Production-ready Gerber files.
     - `ProPrj_...`: PCB design project file.
 - **3D Printed Case** (`hardware/Case/`):
-    - `stackmatlinkcaseprint final-case.001.stl`, `.002.stl`: Ready-to-print STL files.
-    - `stackmatlinkcaseprint final.blend`: Original Blender source file.
+    - `stackmatlink-case-print-blender-case.001.stl`, `.002.stl`: Ready-to-print STL files.
+    - `stackmatlink-case-print-blender.blend`: Original Blender source file.
 - **Wiring Guide** (`hardware/Wiring/`):
     - `Wiringconnection.png`: Visual diagram for circuit connections.
 
