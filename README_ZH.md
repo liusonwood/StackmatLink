@@ -128,8 +128,8 @@ Copyright (c) 2026 liusonwood.
 ---
 
 ### 鸣谢
-- `NimBLE-Arduino` 库开发者。
-- [`csTimer`](https://github.com/cs0x7f/cstimer) 项目及其 [GAN 计时器驱动代码](https://github.com/cs0x7f/cstimer/blob/master/src/js/hardware/gantimer.js)参考。
+- `NimBLE-Arduino` `Adafruit_NeoPixel` 库开发者。
+- [`csTimer`](https://github.com/cs0x7f/cstimer) 项目及其 [GAN 计时器驱动代码](https://github.com/afedotov/gan-web-bluetooth)参考。
 
 ---
 
