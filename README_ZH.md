@@ -26,7 +26,7 @@
 
 ## 🛠 硬件需求
 
-- **MCU**: ESP32-S3 (测试使用 N16R8 版本，pcb焊接使用 **ESP32-S3-SuperMini** 版本，但全系列 S3 均可)。
+- **MCU**: ESP32-S3 (测试使用 N16R8 版本，PCB焊接使用 **ESP32-S3-SuperMini** 版本，但全系列 S3 均可)。
 - **信号整形**: **LM393 比较器 (贴片/SMD 版本)**。
 - **指示灯**: 板载或外接 NeoPixel (WS2812) LED。
 - **接口**: 3.5mm 音频头（Tip 信号，Sleeve 地）。
