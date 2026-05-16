@@ -25,12 +25,13 @@ With this project, you can bridge any standard non-Bluetooth Stackmat timer to *
 
 ## 🛠 Hardware Requirements
 
-- **MCU**: ESP32-S3 (Tested on N16R8, PCB uses esp32-s3-supermini，but compatible with all S3 variants).
-- **Signal Conditioning**: LM393 Voltage Comparator Module.
+- **MCU**: ESP32-S3 (Tested on N16R8, PCB uses **ESP32-S3-SuperMini**, but compatible with all S3 variants).
+- **Signal Conditioning**: **LM393 Voltage Comparator (SMD/SOP-8 version)**.
+- **Status LED**: Onboard or external NeoPixel (WS2812) LED.
 - **Interface**: 3.5mm Audio Jack (Tip: Signal, Sleeve: GND).
-- **Electronic Components**: 
-    - 1x 10kΩ Pull-up Resistor.
-    - 2x 10kΩ Voltage Divider Resistors (to create a ~1.65V reference).
+- **Electronic Components (BOM)**: 
+    - **10kΩ Resistor Network** (or 3x 10kΩ SMD resistors: 1x pull-up, 2x voltage divider for 1.65V ref).
+    - 0.1μF decoupling capacitor (Optional but recommended).
 
 ## 🔌 Wiring Diagram
 
@@ -39,6 +40,7 @@ With this project, you can bridge any standard non-Bluetooth Stackmat timer to *
 | **LM393 VCC** | 3.3V | Power Supply |
 | **LM393 GND** | GND | Common Ground |
 | **LM393 Output** | GPIO 4 | **Requires 10kΩ Pull-up to 3.3V** |
+| **NeoPixel DI** | GPIO 48 | Status LED (Onboard on SuperMini) |
 | **3.5mm Tip** | LM393 IN+ | Raw Timer Signal |
 | **Reference GND**| LM393 IN- | 1.65V Ref (via Voltage Divider) |
 
@@ -53,12 +55,32 @@ Since the timer outputs a weak analog audio signal (sine-ish wave) with noise:
 
 
 
+## 🔩 Hardware Resources
+
+You can find all design files in the `hardware/` directory:
+
+- **PCB Design** (`hardware/PCB/`):
+    - `Gerber_PCB1_...`: Production-ready Gerber files.
+    - `ProPrj_...`: PCB design project file.
+- **3D Printed Case** (`hardware/Case/`):
+    - `stackmatlinkcaseprint final-case.001.stl`, `.002.stl`: Ready-to-print STL files.
+    - `stackmatlinkcaseprint final.blend`: Original Blender source file.
+- **Wiring Guide** (`hardware/Wiring/`):
+    - `Wiringconnection.jpeg`: Visual diagram for circuit connections.
+
+### 📋 PCB BOM List
+If you plan to manufacture the custom PCB using the Gerber files in `hardware/PCB/`, you will need:
+1. **ESP32-S3 SuperMini**: The core controller.
+2. **LM393 (SOP-8)**: SMD Voltage Comparator.
+3. **10kΩ Resistors**: Suggested 0603 or 0805 package.
+4. **3.5mm Audio Jack**: PJ-307 or equivalent 5-pin DIP socket.
+
 ## 🚀 Installation
 
 1. Install [Arduino IDE](https://www.arduino.cc/en/software).
 2. Install the `esp32` (by Espressif) board package.
-3. Install the `NimBLE-Arduino` library via the Library Manager.
-4. Open `stackmattoble.ino` and select your ESP32-S3 board.
+3. Install the `NimBLE-Arduino` and `Adafruit_NeoPixel` libraries via the Library Manager.
+4. Open `stackmatlink.ino` and select your ESP32-S3 board.
 5. **Note**: If `USB CDC On Boot` is enabled, use the **Native USB** port for serial debugging.
 6. Click **Upload**.
 
@@ -80,6 +102,7 @@ Since the timer outputs a weak analog audio signal (sine-ish wave) with noise:
 
 ## 📜 License
 
+Copyright (c) 2026 liusonwood.
 MIT License. Contributions and PRs are welcome!
 
 ---

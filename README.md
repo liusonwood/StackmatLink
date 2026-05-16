@@ -26,12 +26,13 @@
 
 ## 🛠 硬件需求
 
-- **MCU**: ESP32-S3 (测试使用 N16R8 版本，pcb焊接使用esp32-s3-supermini版本，但全系列 S3 均可)。
-- **信号整形**: LM393 比较器模块。
+- **MCU**: ESP32-S3 (测试使用 N16R8 版本，pcb焊接使用 **ESP32-S3-SuperMini** 版本，但全系列 S3 均可)。
+- **信号整形**: **LM393 比较器 (贴片/SMD 版本)**。
+- **指示灯**: 板载或外接 NeoPixel (WS2812) LED。
 - **接口**: 3.5mm 音频头（Tip 信号，Sleeve 地）。
-- **电子元件**: 
-    - 10kΩ 上拉电阻 (1个)。
-    - 10kΩ 分压电阻 (2个，用于建立 1.65V 参考电压)。
+- **电子元件 (BOM)**: 
+    - **10kΩ 排阻 (Resistor Network)** 或 3个 10kΩ 贴片电阻 (1个用于上拉，2个用于建立 1.65V 参考电压)。
+    - 0.1μF 滤波电容 (可选，建议在电源端添加)。
 
 ## 🔌 电路连接 (Wiring)
 
@@ -40,6 +41,7 @@
 | **LM393 VCC** | 3.3V | 供电 |
 | **LM393 GND** | GND | 共地 |
 | **LM393 Output** | GPIO 4 | **必须接 10kΩ 上拉电阻到 3.3V** |
+| **NeoPixel DI** | GPIO 48 | 状态指示灯 (SuperMini 自带) |
 | **3.5mm Tip** | LM393 IN+ | 计时器原始信号 |
 | **GND 参考** | LM393 IN- | 接 1.65V 参考电压 (3.3V 经两电阻分压) |
 
@@ -52,12 +54,32 @@
     - 信号 < 1.65V -> 输出 0V。
 4. **结果**：输出端产生标准的数字方波，由 ESP32 的硬件串口 (UART) 精准解析 ASCII 字符。
 
+## 🔩 硬件资源 (Hardware Resources)
+
+在 `hardware/` 目录下可以找到所有设计文件：
+
+- **PCB 设计** (`hardware/PCB/`)：
+    - `Gerber_PCB1_...`: 用于打样的 PCB Gerber 文件。
+    - `ProPrj_...`: PCB 项目工程文件。
+- **3D 打印外壳** (`hardware/Case/`)：
+    - `stackmatlinkcaseprint final-case.001.stl`, `.002.stl`: 导出好的 3D 打印模型。
+    - `stackmatlinkcaseprint final.blend`: 外壳的 Blender 源文件。
+- **接线参考** (`hardware/Wiring/`)：
+    - `Wiringconnection.jpeg`: 详细的电路连接示意图。
+
+### 📋 PCB BOM 清单
+如果您打算使用 `hardware/PCB/` 下的 Gerber 文件打样，您将需要以下核心组件：
+1. **ESP32-S3 SuperMini**: 核心控制器。
+2. **LM393 (SOP-8)**: 贴片式电压比较器。
+3. **10kΩ 排阻**: 建议使用 0603 或 0805 封装。
+4. **3.5mm 音频母座**: PJ-307 或同类 5-pin 直插封装。
+
 ## 🚀 软件安装
 
 1. 安装 [Arduino IDE](https://www.arduino.cc/en/software)。
 2. 在开发板管理器中安装 `esp32` (by Espressif) 支持包。
-3. 在库管理器中安装 `NimBLE-Arduino` 库。
-4. 打开 `stackmattoble.ino`，选择您的 ESP32-S3 开发板型号。
+3. 在库管理器中安装 `NimBLE-Arduino` 和 `Adafruit_NeoPixel` 库。
+4. 打开 `stackmatlink.ino`，选择您的 ESP32-S3 开发板型号。
 5. 点击 **上传**。
 
 ## 📱 使用指南
@@ -78,7 +100,8 @@
 
 ## 📜 开源协议
 
-MIT License. 欢迎提交 PR 优化协议逻辑！
+Copyright (c) 2026 liusonwood. 
+本项目采用 MIT License。欢迎提交 PR 优化协议逻辑！
 
 ---
 
