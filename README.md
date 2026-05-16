@@ -31,7 +31,6 @@ With this project, you can bridge any standard non-Bluetooth Stackmat timer to *
 - **Interface**: 3.5mm Audio Jack (Tip: Signal, Sleeve: GND).
 - **Electronic Components (BOM)**: 
     - **10kΩ Resistor Network** (or 3x 10kΩ SMD resistors: 1x pull-up, 2x voltage divider for 1.65V ref).
-    - 0.1μF decoupling capacitor (Optional but recommended).
 
 ## 🔌 Wiring Diagram
 
