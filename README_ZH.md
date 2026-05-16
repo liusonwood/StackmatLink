@@ -36,9 +36,9 @@
 
 ## 🔌 电路连接 (Wiring)
 
-![电路连接图](./hardware/Wiring/Wiringconnection.png)
+<img src="./hardware/Wiring/Wiringconnection.png" width="600" alt="电路连接图">
 
-*LM393 与 ESP32-S3 的面包板接线参考图。*
+**LM393 与 ESP32-S3 的面包板接线参考图。**
 
 | 组件 | ESP32-S3 引脚 | 说明 |
 | :--- | :--- | :--- |
@@ -61,12 +61,14 @@
 ## 🔩 硬件资源 (Hardware Resources)
 
 ### 外壳设计 (Case Design)
-![外壳渲染图](./hardware/Case/caes-render.jpg)
-*3D 打印外壳与内部组件的爆炸分解图。*
+<img src="./hardware/Case/caes-render.jpg" width="600" alt="外壳渲染图">
+
+**3D 打印外壳与内部组件的爆炸分解图。**
 
 ### PCB 布局 (PCB Layout)
-![PCB 预览图](./hardware/PCB/PCB.png)
-*定制 PCB 设计的顶层视图。*
+<img src="./hardware/PCB/PCB.png" width="600" alt="PCB 预览图">
+
+**定制 PCB 设计的顶层视图。**
 
 在 `hardware/` 目录下可以找到所有设计文件：
 
@@ -77,7 +79,7 @@
     - `stackmatlinkcaseprint final-case.001.stl`, `.002.stl`: 导出好的 3D 打印模型。
     - `stackmatlinkcaseprint final.blend`: 外壳的 Blender 源文件。
 - **接线参考** (`hardware/Wiring/`)：
-    - `Wiringconnection.jpeg`: 详细的电路连接示意图。
+    - `Wiringconnection.png`: 详细的电路连接示意图。
 
 ### 📋 PCB BOM 清单
 如果您打算使用 `hardware/PCB/` 下的 Gerber 文件打样，您将需要以下核心组件：

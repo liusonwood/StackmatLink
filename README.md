@@ -35,9 +35,9 @@ With this project, you can bridge any standard non-Bluetooth Stackmat timer to *
 
 ## 🔌 Wiring Diagram
 
-![Wiring Diagram](./hardware/Wiring/Wiringconnection.png)
+<img src="./hardware/Wiring/Wiringconnection.png" width="600" alt="Wiring Diagram">
 
-*Breadboard wiring reference for LM393 and ESP32-S3.*
+**Breadboard wiring reference for LM393 and ESP32-S3.**
 
 | Component | ESP32-S3 Pin | Description |
 | :--- | :--- | :--- |
@@ -62,12 +62,14 @@ Since the timer outputs a weak analog audio signal (sine-ish wave) with noise:
 ## 🔩 Hardware Resources
 
 ### Case Design
-![Case Render](./hardware/Case/caes-render.jpg)
-*Exploded view of the 3D printed case and internal assembly.*
+<img src="./hardware/Case/caes-render.jpg" width="600" alt="Case Render">
+
+**Exploded view of the 3D printed case and internal assembly.**
 
 ### PCB Layout
-![PCB Preview](./hardware/PCB/PCB.png)
-*Top view of the custom PCB design.*
+<img src="./hardware/PCB/PCB.png" width="600" alt="PCB Preview">
+
+**Top view of the custom PCB design.**
 
 You can find all design files in the `hardware/` directory:
 
@@ -78,7 +80,7 @@ You can find all design files in the `hardware/` directory:
     - `stackmatlinkcaseprint final-case.001.stl`, `.002.stl`: Ready-to-print STL files.
     - `stackmatlinkcaseprint final.blend`: Original Blender source file.
 - **Wiring Guide** (`hardware/Wiring/`):
-    - `Wiringconnection.jpeg`: Visual diagram for circuit connections.
+    - `Wiringconnection.png`: Visual diagram for circuit connections.
 
 ### 📋 PCB BOM List
 If you plan to manufacture the custom PCB using the Gerber files in `hardware/PCB/`, you will need:
