@@ -2,113 +2,120 @@
 
 # StackmatLink
 
-🌐 [English](./README_EN.md) | [简体中文](./README.md)
+🌐 [English](./README.md) | [简体中文](./README_ZH.md)
 
 </div>
 
 ---
-# Stackmat魔方计时器 -> BLE 蓝牙转换器
 
-这是一个基于 **ESP32-S3** 的开源项目，旨在将 **GAN Halo (星环)** 计时器通过音频口输出的模拟 Stackmat 信号，实时转换为 **GAN Smart Timer 蓝牙协议**。
+**StackmatLink** is an open-source project based on the **ESP32-S3**. It captures the analog Stackmat signals from a **GAN Halo (and other standard timers)** audio port and converts them in real-time into the **GAN Smart Timer Bluetooth Protocol**.
 
-通过该项目，您可以让任何标准 Stackmat 魔方计时器（本项目使用GAN Halo 计时器）通过蓝牙连接到的 **csTimer**，实现自动同步成绩，无需购买昂贵的蓝牙版。
+With this project, you can bridge any standard non-Bluetooth Stackmat timer to **csTimer** wirelessly, eliminating the need for expensive Bluetooth-native hardware.
 
-## 🌟 核心特性
+## 🌟 Key Features
 
-- **协议转换**：将 Stackmat Gen4 (1200 Baud) 信号转换为 GAN 官方蓝牙协议（包含 0xFE 魔数包及 CRC16 校验）。
-- **智能状态推断**：针对 GAN Halo 特有的 `'I'` 状态码，通过时间轴动态判定 `Running`（运行）和 `Stopped`（停止）状态，解决 csTimer 识别障碍。
-- **双核并发处理**：
-    - **Core 1**：负责 1200 波特率的高精度信号实时采样与解析。
-    - **Core 0**：负责 NimBLE 蓝牙堆栈和成绩通知（Notify），确保数据传输零延迟。
-- **自动相位纠正**：具备自动检测信号反相（Inverted）并纠正的功能，极大提高不同硬件电路的兼容性。
-- **增强可见性**：优化了 BLE 广播参数，确保 Mac Chrome 浏览器和 iPad csTimer 能快速发现并连接设备。
-- **连接鲁棒性**：采用轮询连接数（getConnectedCount）机制，解决部分系统下蓝牙连接回调延迟的问题。
+- **Protocol Conversion**: Seamlessly converts Stackmat Gen4 (1200 Baud) signals into the official GAN Bluetooth protocol (including the `0xFE` magic packet and CRC16/CCIT-FALSE checksums).
+- **Intelligent State Inference**: Specifically handles the GAN Halo `'I'` (Idle) state. It dynamically determines `Running` and `Stopped` states based on the time axis to ensure compatibility with csTimer.
+- **Dual-Core Concurrency**:
+    - **Core 1**: Dedicated to high-precision signal sampling and parsing at 1200 Baud.
+    - **Core 0**: Handles the NimBLE Bluetooth stack and Notify updates for zero-latency data transmission.
+- **Automatic Phase Correction**: Built-in logic to detect inverted signals (common in different LM393 wiring) and correct them on the fly.
+- **Enhanced Visibility**: Optimized BLE advertising parameters for instant discovery on Mac/PC Chrome and iPad/iOS.
+- **Robust Connectivity**: Implements a connection polling mechanism (`getConnectedCount`) to ensure stable data sync even when Bluetooth callbacks are delayed.
 
-## 🛠 硬件需求
+## 🛠 Hardware Requirements
 
-- **MCU**: ESP32-S3 (测试使用 N16R8 版本，pcb焊接使用 **ESP32-S3-SuperMini** 版本，但全系列 S3 均可)。
-- **信号整形**: **LM393 比较器 (贴片/SMD 版本)**。
-- **指示灯**: 板载或外接 NeoPixel (WS2812) LED。
-- **接口**: 3.5mm 音频头（Tip 信号，Sleeve 地）。
-- **电子元件 (BOM)**: 
-    - **10kΩ 排阻 (Resistor Network)** 或 3个 10kΩ 贴片电阻 (1个用于上拉，2个用于建立 1.65V 参考电压)。
-    - 0.1μF 滤波电容 (可选，建议在电源端添加)。
+- **MCU**: ESP32-S3 (Tested on N16R8, PCB uses **ESP32-S3-SuperMini**, but compatible with all S3 variants).
+- **Signal Conditioning**: **LM393 Voltage Comparator (SMD/SOP-8 version)**.
+- **Status LED**: Onboard or external NeoPixel (WS2812) LED.
+- **Interface**: 3.5mm Audio Jack (Tip: Signal, Sleeve: GND).
+- **Electronic Components (BOM)**: 
+    - **10kΩ Resistor Network** (or 3x 10kΩ SMD resistors: 1x pull-up, 2x voltage divider for 1.65V ref).
+    - 0.1μF decoupling capacitor (Optional but recommended).
 
-## 🔌 电路连接 (Wiring)
+## 🔌 Wiring Diagram
 
-| 组件 | ESP32-S3 引脚 | 说明 |
+| Component | ESP32-S3 Pin | Description |
 | :--- | :--- | :--- |
-| **LM393 VCC** | 3.3V | 供电 |
-| **LM393 GND** | GND | 共地 |
-| **LM393 Output** | GPIO 4 | **必须接 10kΩ 上拉电阻到 3.3V** |
-| **NeoPixel DI** | GPIO 48 | 状态指示灯 (SuperMini 自带) |
-| **3.5mm Tip** | LM393 IN+ | 计时器原始信号 |
-| **GND 参考** | LM393 IN- | 接 1.65V 参考电压 (3.3V 经两电阻分压) |
+| **LM393 VCC** | 3.3V | Power Supply |
+| **LM393 GND** | GND | Common Ground |
+| **LM393 Output** | GPIO 4 | **Requires 10kΩ Pull-up to 3.3V** |
+| **NeoPixel DI** | GPIO 48 | Status LED (Onboard on SuperMini) |
+| **3.5mm Tip** | LM393 IN+ | Raw Timer Signal |
+| **Reference GND**| LM393 IN- | 1.65V Ref (via Voltage Divider) |
 
-### 物理整形逻辑说明
-由于计时器输出的是微弱的模拟音频信号（正弦波），电压波动较小，且带有噪声。
-1. **模拟阶段**：计时器信号（约 0.7V~2.5V 波动）进入 LM393 的 `IN+`。
-2. **比较阶段**：LM393 将其与 `IN-`（固定在 1.65V）进行实时比较。
-3. **数字阶段**：
-    - 信号 > 1.65V -> 输出 3.3V。
-    - 信号 < 1.65V -> 输出 0V。
-4. **结果**：输出端产生标准的数字方波，由 ESP32 的硬件串口 (UART) 精准解析 ASCII 字符。
+### Signal Shaping Logic
+Since the timer outputs a weak analog audio signal (sine-ish wave) with noise:
+1. **Analog Stage**: The signal (~0.7V–2.5V) enters the LM393 `IN+`.
+2. **Comparison**: The LM393 compares it against the fixed `IN-` (1.65V).
+3. **Digital Stage**: 
+    - Signal > 1.65V -> Output 3.3V.
+    - Signal < 1.65V -> Output 0V.
+4. **Result**: A clean digital square wave is generated for the ESP32 UART to parse.
 
-## 🔩 硬件资源 (Hardware Resources)
 
-在 `hardware/` 目录下可以找到所有设计文件：
 
-- **PCB 设计** (`hardware/PCB/`)：
-    - `Gerber_PCB1_...`: 用于打样的 PCB Gerber 文件。
-    - `ProPrj_...`: PCB 项目工程文件。
-- **3D 打印外壳** (`hardware/Case/`)：
-    - `stackmatlinkcaseprint final-case.001.stl`, `.002.stl`: 导出好的 3D 打印模型。
-    - `stackmatlinkcaseprint final.blend`: 外壳的 Blender 源文件。
-- **接线参考** (`hardware/Wiring/`)：
-    - `Wiringconnection.jpeg`: 详细的电路连接示意图。
+## 🔩 Hardware Resources
 
-### 📋 PCB BOM 清单
-如果您打算使用 `hardware/PCB/` 下的 Gerber 文件打样，您将需要以下核心组件：
-1. **ESP32-S3 SuperMini**: 核心控制器。
-2. **LM393 (SOP-8)**: 贴片式电压比较器。
-3. **10kΩ 排阻**: 建议使用 0603 或 0805 封装。
-4. **3.5mm 音频母座**: PJ-307 或同类 5-pin 直插封装。
+You can find all design files in the `hardware/` directory:
 
-## 🚀 软件安装
+- **PCB Design** (`hardware/PCB/`):
+    - `Gerber_PCB1_...`: Production-ready Gerber files.
+    - `ProPrj_...`: PCB design project file.
+- **3D Printed Case** (`hardware/Case/`):
+    - `stackmatlinkcaseprint final-case.001.stl`, `.002.stl`: Ready-to-print STL files.
+    - `stackmatlinkcaseprint final.blend`: Original Blender source file.
+- **Wiring Guide** (`hardware/Wiring/`):
+    - `Wiringconnection.jpeg`: Visual diagram for circuit connections.
 
-1. 安装 [Arduino IDE](https://www.arduino.cc/en/software)。
-2. 在开发板管理器中安装 `esp32` (by Espressif) 支持包。
-3. 在库管理器中安装 `NimBLE-Arduino` 和 `Adafruit_NeoPixel` 库。
-4. 打开 `stackmatlink.ino`，选择您的 ESP32-S3 开发板型号。
-5. 点击 **上传**。
+### 📋 PCB BOM List
+If you plan to manufacture the custom PCB using the Gerber files in `hardware/PCB/`, you will need:
+1. **ESP32-S3 SuperMini**: The core controller.
+2. **LM393 (SOP-8)**: SMD Voltage Comparator.
+3. **10kΩ Resistors**: Suggested 0603 or 0805 package.
+4. **3.5mm Audio Jack**: PJ-307 or equivalent 5-pin DIP socket.
 
-## 📱 使用指南
+## 🚀 Installation
 
-1. **上电**：将 ESP32-S3 接入电源，并将音频线连接到计时器。
-2. **确认信号**：打开串口监视器（115200 波特率），操作计时器，看到 `Time: X:XX.XXX -> GAN: X` 即表示解析成功。
-3. **连接 csTimer**：
-    - 打开 [csTimer.net](https://cstimer.net)。
-    - 设置 -> 计时器 -> 输入类型 -> **蓝牙魔方/计时器**。
-    - 点击 csTimer 顶部蓝牙图标，选择名为 **"GAN-Timer"** 的设备并配对。
-    - 打开串口监视器（115200 波特率），操作计时器，看到 ` BLE TX (Clients: 1): xxx` 即表示连接成功
-4. **开始计时**：计时器的操作将实时同步到网页中。
+1. Install [Arduino IDE](https://www.arduino.cc/en/software).
+2. Install the `esp32` (by Espressif) board package.
+3. Install the `NimBLE-Arduino` and `Adafruit_NeoPixel` libraries via the Library Manager.
+4. Open `stackmatlink.ino` and select your ESP32-S3 board.
+5. **Note**: If `USB CDC On Boot` is enabled, use the **Native USB** port for serial debugging.
+6. Click **Upload**.
 
-## ⚠️ 注意事项
+## 📱 How to Use
 
-- **LM393 调节**：如果信号无法解析，请微调 LM393 上的电位器。建议使 LM393 的阈值处于信号波动的中心位置。
-- **设备连接**：cstimer推荐：Chrome（谷歌浏览器）用于Windows、macOS、Linux、Android；Bluefy用于iOS
+1. **Power Up**: Connect the ESP32-S3 to power and plug the audio cable into the timer.
+2. **Verify Signal**: Open Serial Monitor (115200 baud). Operate the timer.
+    - *Note: If debug prints are disabled in code, you can verify activity by observing the NeoPixel LED (Blue = Running).*
+3. **Connect to csTimer**:
+    - Go to [csTimer.net](https://cstimer.net) (Chrome/Edge recommended).
+    - Settings -> Timer -> Entering Type -> **Bluetooth Timer**.
+    - Click the Bluetooth icon at the top of csTimer and pair with **"GAN-Timer"**.
+    - If successful, the Serial Monitor will show `>> [BLE] onConnect callback triggered!`.
+4. **Go!**: Your physical timer is now synced with the digital solve.
 
-## 📜 开源协议
+## ⚠️ Troubleshooting
 
-Copyright (c) 2026 liusonwood. 
-本项目采用 MIT License。欢迎提交 PR 优化协议逻辑！
+- **No Data / Signal Issues**:
+    - If the Serial Monitor shows GPIO level activity but no time is parsed, try toggling the `inverted` parameter in the `stackmatTask` code or check your wiring.
+    - **LM393 Adjustment**: Use a screwdriver to fine-tune the potentiometer on the LM393 until the signal triggers consistently.
+- **Connectivity**: Use **Chrome** (Windows/macOS/Android) or **Bluefy** (iOS) for the best Web Bluetooth experience.
+- **LED Status**:
+    - **Blue**: Timer is running.
+    - **White/Blinking**: Timer is reset or ready.
+
+## 📜 License
+
+Copyright (c) 2026 liusonwood.
+MIT License. Contributions and PRs are welcome!
 
 ---
 
-### 鸣谢
-- `NimBLE-Arduino` 库开发者。
-- [`csTimer`](https://github.com/cs0x7f/cstimer) 项目及其 [GAN 计时器驱动代码](https://github.com/cs0x7f/cstimer/blob/master/src/js/hardware/gantimer.js)参考。
-
+### Acknowledgments
+- The `NimBLE-Arduino` community.
+- The [`csTimer`](https://github.com/cs0x7f/cstimer) project and its excellent [GAN Timer driver](https://github.com/cs0x7f/cstimer/blob/master/src/js/hardware/gantimer.js) reference.
 ---
 
 This project was conceptualized by me and implemented in 2 hours with the help of AI pair programming.
