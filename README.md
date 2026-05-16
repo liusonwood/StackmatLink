@@ -35,6 +35,10 @@ With this project, you can bridge any standard non-Bluetooth Stackmat timer to *
 
 ## 🔌 Wiring Diagram
 
+![Wiring Diagram](./hardware/Wiring/Wiringconnection.png)
+
+*Breadboard wiring reference for LM393 and ESP32-S3.*
+
 | Component | ESP32-S3 Pin | Description |
 | :--- | :--- | :--- |
 | **LM393 VCC** | 3.3V | Power Supply |
@@ -56,6 +60,14 @@ Since the timer outputs a weak analog audio signal (sine-ish wave) with noise:
 
 
 ## 🔩 Hardware Resources
+
+### Case Design
+![Case Render](./hardware/Case/caes-render.jpg)
+*Exploded view of the 3D printed case and internal assembly.*
+
+### PCB Layout
+![PCB Preview](./hardware/PCB/PCB.png)
+*Top view of the custom PCB design.*
 
 You can find all design files in the `hardware/` directory:
 

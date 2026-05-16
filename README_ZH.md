@@ -36,6 +36,10 @@
 
 ## 🔌 电路连接 (Wiring)
 
+![电路连接图](./hardware/Wiring/Wiringconnection.png)
+
+*LM393 与 ESP32-S3 的面包板接线参考图。*
+
 | 组件 | ESP32-S3 引脚 | 说明 |
 | :--- | :--- | :--- |
 | **LM393 VCC** | 3.3V | 供电 |
@@ -55,6 +59,14 @@
 4. **结果**：输出端产生标准的数字方波，由 ESP32 的硬件串口 (UART) 精准解析 ASCII 字符。
 
 ## 🔩 硬件资源 (Hardware Resources)
+
+### 外壳设计 (Case Design)
+![外壳渲染图](./hardware/Case/caes-render.jpg)
+*3D 打印外壳与内部组件的爆炸分解图。*
+
+### PCB 布局 (PCB Layout)
+![PCB 预览图](./hardware/PCB/PCB.png)
+*定制 PCB 设计的顶层视图。*
 
 在 `hardware/` 目录下可以找到所有设计文件：
 
