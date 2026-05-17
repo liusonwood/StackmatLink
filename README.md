@@ -88,6 +88,28 @@ If you plan to manufacture the custom PCB using the Gerber files in `hardware/PC
 3. **10kΩ Resistors**: Suggested 0603 or 0805 package.
 4. **3.5mm Audio Jack**: PJ-307 or equivalent 5-pin DIP socket.
 
+## 📂 Project Structure
+
+```text
+.
+├── GEMINI.md                   # Gemini AI instructions & project overview
+├── LICENSE                     # MIT License
+├── README.md                   # English Documentation
+├── README_ZH.md                # Chinese Documentation
+├── stackmatlink.ino            # Main Arduino source code
+└── hardware/
+    ├── Case/                   # 3D printed case designs (STL, Blender)
+    │   ├── caes-render.jpg
+    │   ├── ... .stl
+    │   └── ... .blend
+    ├── PCB/                    # PCB design and production files (Gerber, Project)
+    │   ├── Gerber_PCB1_... .zip
+    │   ├── PCB.png
+    │   └── ... .epro2
+    └── Wiring/                 # Circuit diagrams and references
+        └── Wiringconnection.png
+```
+
 ## 🚀 Installation
 
 1. Install [Arduino IDE](https://www.arduino.cc/en/software).
@@ -113,7 +135,6 @@ If you plan to manufacture the custom PCB using the Gerber files in `hardware/PC
 
 - **No Data / Signal Issues**:
     - If the Serial Monitor shows GPIO level activity but no time is parsed, try toggling the `inverted` parameter in the `stackmatTask` code or check your wiring.
-    - **LM393 Adjustment**: Use a screwdriver to fine-tune the potentiometer on the LM393 until the signal triggers consistently.
 - **Connectivity**: Use **Chrome** (Windows/macOS/Android) or **Bluefy** (iOS) for the best Web Bluetooth experience.
 - **LED Status**:
     - **Blue**: Timer is running.

@@ -87,6 +87,28 @@
 3. **10kΩ 排阻**: 建议使用 0603 或 0805 封装。
 4. **3.5mm 音频母座**: PJ-307 或同类 5-pin 直插封装。
 
+## 📂 项目结构 (Project Structure)
+
+```text
+.
+├── GEMINI.md                   # Gemini AI 助手指令与项目概要
+├── LICENSE                     # MIT 开源协议
+├── README.md                   # 英文文档
+├── README_ZH.md                # 中文文档
+├── stackmatlink.ino            # Arduino 主程序源代码
+└── hardware/
+    ├── Case/                   # 3D 打印外壳设计 (STL, Blender)
+    │   ├── caes-render.jpg
+    │   ├── ... .stl
+    │   └── ... .blend
+    ├── PCB/                    # PCB 设计与生产文件 (Gerber, 工程文件)
+    │   ├── Gerber_PCB1_... .zip
+    │   ├── PCB.png
+    │   └── ... .epro2
+    └── Wiring/                 # 电路连接参考图
+        └── Wiringconnection.png
+```
+
 ## 🚀 软件安装
 
 1. 安装 [Arduino IDE](https://www.arduino.cc/en/software)。
@@ -112,7 +134,6 @@
 
 - **信号解析失败**：
     - 如果串口显示 GPIO 电平有变化但无法解析时间，请尝试在代码 `stackmatTask` 中将 `inverted` 初始值取反，或者检查硬件接线。
-    - **LM393 调节**：如果信号不稳定，请微调 LM393 上的电位器，使阈值处于信号波动的中心。
 - **设备连接**：
     - Chrome (Windows/macOS/Android) 或 Bluefy (iOS) 是目前 Web Bluetooth 兼容性最好的方案。
 - **指示灯状态**：
