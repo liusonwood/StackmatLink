@@ -7,8 +7,7 @@
 </div>
 
 ---
-**⚠️ Security Warning:** StackmatLink is an open-source project. This is the only official repository. Be careful of fake 'clones' or 'installers' on GitHub that provide .zip or .exe files. This project is provided as source code; I will never ask you to download a setup.exe.
----
+
 
 **StackmatLink** is an open-source project based on the **ESP32-S3**. It captures the analog Stackmat signals from a **GAN Halo (and other standard timers)** audio port and converts them in real-time into the **GAN Smart Timer Bluetooth Protocol**.
 
@@ -119,6 +118,8 @@ MIT License. Contributions and PRs are welcome!
 - The `NimBLE-Arduino` and `Adafruit_NeoPixel` communities.
 - The [`csTimer`](https://github.com/cs0x7f/cstimer) project and [GAN Timer driver](https://github.com/afedotov/gan-web-bluetooth) reference.
 
+---
+**⚠️ Security Warning:** StackmatLink is an open-source project. This is the only official repository. Be careful of fake 'clones' or 'installers' on GitHub that provide .zip or .exe files. This project is provided as source code; I will never ask you to download a setup.exe.
 ---
 This project was initially conceptualized by me and implemented in 2 hours with the help of AI pair programming.
 本项目由我最初构思，并在 AI 对编程的辅助下耗时两小时实现。
