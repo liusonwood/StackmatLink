@@ -23,71 +23,6 @@ With this project, you can bridge any standard non-Bluetooth Stackmat timer to *
 - **Enhanced Visibility**: Optimized BLE advertising parameters for instant discovery on Mac/PC Chrome and iPad/iOS.
 - **Robust Connectivity**: Implements a connection polling mechanism (`getConnectedCount`) to ensure stable data sync even when Bluetooth callbacks are delayed.
 
-## 🛠 Hardware Requirements
-
-- **MCU**: ESP32-S3 (Tested on N16R8, PCB uses **ESP32-S3-SuperMini**, but compatible with all S3 variants).
-- **Signal Conditioning**: **LM393 Voltage Comparator (SMD/SOP-8 version)**.
-- **Status LED**: Onboard or external NeoPixel (WS2812) LED.
-- **Interface**: 3.5mm Audio Jack (Tip: Signal, Sleeve: GND).
-- **Electronic Components (BOM)**: 
-    - **10kΩ Resistor Network** (or 3x 10kΩ SMD resistors: 1x pull-up, 2x voltage divider for 1.65V ref).
-
-## 🔌 Wiring Diagram
-
-<img src="./hardware/Wiring/Wiringconnection.png" width="600" alt="Wiring Diagram">
-
-**Breadboard wiring reference for LM393 and ESP32-S3.**
-
-| Component | ESP32-S3 Pin | Description |
-| :--- | :--- | :--- |
-| **LM393 VCC** | 3.3V | Power Supply |
-| **LM393 GND** | GND | Common Ground |
-| **LM393 Output** | GPIO 4 | **Requires 10kΩ Pull-up to 3.3V** |
-| **NeoPixel DI** | GPIO 48 | Status LED (Onboard on SuperMini) |
-| **3.5mm Tip** | LM393 IN+ | Raw Timer Signal |
-| **Reference GND**| LM393 IN- | 1.65V Ref (via Voltage Divider) |
-
-### Signal Shaping Logic
-Since the timer outputs a weak analog audio signal (sine-ish wave) with noise:
-1. **Analog Stage**: The signal (~0.7V–2.5V) enters the LM393 `IN+`.
-2. **Comparison**: The LM393 compares it against the fixed `IN-` (1.65V).
-3. **Digital Stage**: 
-    - Signal > 1.65V -> Output 3.3V.
-    - Signal < 1.65V -> Output 0V.
-4. **Result**: A clean digital square wave is generated for the ESP32 UART to parse.
-
-
-
-## 🔩 Hardware Resources
-
-### Case Design
-<img src="./hardware/Case/caes-render.jpg" width="600" alt="Case Render">
-
-**Exploded view of the 3D printed case and internal assembly.**
-
-### PCB Layout
-<img src="./hardware/PCB/PCB.png" width="600" alt="PCB Preview">
-
-**Top view of the custom PCB design.**
-
-You can find all design files in the `hardware/` directory:
-
-- **PCB Design** (`hardware/PCB/`):
-    - `Gerber_PCB1_...`: Production-ready Gerber files.
-    - `ProPrj_...`: PCB design project file.
-- **3D Printed Case** (`hardware/Case/`):
-    - `stackmatlink-case-print-blender-case.001.stl`, `.002.stl`: Ready-to-print STL files.
-    - `stackmatlink-case-print-blender.blend`: Original Blender source file.
-- **Wiring Guide** (`hardware/Wiring/`):
-    - `Wiringconnection.png`: Visual diagram for circuit connections.
-
-### 📋 PCB BOM List
-If you plan to manufacture the custom PCB using the Gerber files in `hardware/PCB/`, you will need:
-1. **ESP32-S3 SuperMini**: The core controller.
-2. **LM393 (SOP-8)**: SMD Voltage Comparator.
-3. **10kΩ Resistors**: Suggested 0603 or 0805 package.
-4. **3.5mm Audio Jack**: PJ-307 or equivalent 5-pin DIP socket.
-
 ## 📂 Project Structure
 
 ```text
@@ -110,35 +45,66 @@ If you plan to manufacture the custom PCB using the Gerber files in `hardware/PC
         └── Wiringconnection.png
 ```
 
-## 🚀 Installation
+## 🛠 Hardware & Build Guide
 
+### 1. Requirements (BOM)
+- **MCU**: ESP32-S3 (Tested on N16R8, PCB uses **ESP32-S3-SuperMini**, but compatible with all S3 variants).
+- **Signal Conditioning**: **LM393 Voltage Comparator (SMD/SOP-8 version)**.
+- **Status LED**: Onboard or external NeoPixel (WS2812) LED.
+- **Interface**: 3.5mm Audio Jack (Tip: Signal, Sleeve: GND).
+- **Electronic Components**: 
+    - **10kΩ Resistor Network** (or 3x 10kΩ SMD resistors: 1x pull-up, 2x voltage divider for 1.65V ref).
+
+### 2. Wiring Diagram
+<img src="./hardware/Wiring/Wiringconnection.png" width="600" alt="Wiring Diagram">
+
+**Breadboard wiring reference for LM393 and ESP32-S3.**
+
+| Component | ESP32-S3 Pin | Description |
+| :--- | :--- | :--- |
+| **LM393 VCC** | 3.3V | Power Supply |
+| **LM393 GND** | GND | Common Ground |
+| **LM393 Output** | GPIO 4 | **Requires 10kΩ Pull-up to 3.3V** |
+| **NeoPixel DI** | GPIO 48 | Status LED (Onboard on SuperMini) |
+| **3.5mm Tip** | LM393 IN+ | Raw Timer Signal |
+| **Reference GND**| LM393 IN- | 1.65V Ref (via Voltage Divider) |
+
+### 3. Signal Shaping Logic
+Since the timer outputs a weak analog audio signal (sine-ish wave) with noise:
+1. **Analog Stage**: The signal (~0.7V–2.5V) enters the LM393 `IN+`.
+2. **Comparison**: The LM393 compares it against the fixed `IN-` (1.65V).
+3. **Digital Stage**: Signal > 1.65V -> Output 3.3V; Signal < 1.65V -> Output 0V.
+4. **Result**: A clean digital square wave is generated for the ESP32 UART to parse.
+
+### 4. Design Files
+<img src="./hardware/Case/caes-render.jpg" width="400" alt="Case Render"> <img src="./hardware/PCB/PCB.png" width="350" alt="PCB Preview">
+
+- **PCB Design** (`hardware/PCB/`): Gerber files and project source for the custom PCB.
+- **3D Printed Case** (`hardware/Case/`): STL files and original Blender source.
+
+## 💻 Software & Setup
+
+### 1. Installation
 1. Install [Arduino IDE](https://www.arduino.cc/en/software).
 2. Install the `esp32` (by Espressif) board package.
 3. Install the `NimBLE-Arduino` and `Adafruit_NeoPixel` libraries via the Library Manager.
-4. Open `stackmatlink.ino` and select your ESP32-S3 board.
-5. **Note**: If `USB CDC On Boot` is enabled, use the **Native USB** port for serial debugging.
-6. Click **Upload**.
+4. Open `stackmatlink.ino`, select your ESP32-S3 board, and click **Upload**.
+   - *Note: If `USB CDC On Boot` is enabled, use the Native USB port for serial debugging.*
 
-## 📱 How to Use
-
+### 2. Usage Guide
 1. **Power Up**: Connect the ESP32-S3 to power and plug the audio cable into the timer.
-2. **Verify Signal**: Open Serial Monitor (115200 baud). Operate the timer.
-    - *Note: If debug prints are disabled in code, you can verify activity by observing the NeoPixel LED (Blue = Running).*
+2. **Verify Signal**: Open Serial Monitor (115200 baud). The NeoPixel LED will turn **Blue** when the timer is running.
 3. **Connect to csTimer**:
     - Go to [csTimer.net](https://cstimer.net) (Chrome/Edge recommended).
     - Settings -> Timer -> Entering Type -> **Bluetooth Timer**.
     - Click the Bluetooth icon at the top of csTimer and pair with **"GAN-Timer"**.
-    - If successful, the Serial Monitor will show `>> [BLE] onConnect callback triggered!`.
 4. **Go!**: Your physical timer is now synced with the digital solve.
 
 ## ⚠️ Troubleshooting
 
-- **No Data / Signal Issues**:
-    - If the Serial Monitor shows GPIO level activity but no time is parsed, try toggling the `inverted` parameter in the `stackmatTask` code or check your wiring.
+- **No Data**: If the Serial Monitor shows activity but no time is parsed, try toggling the `inverted` parameter in the `stackmatTask` code.
 - **Connectivity**: Use **Chrome** (Windows/macOS/Android) or **Bluefy** (iOS) for the best Web Bluetooth experience.
-- **LED Status**:
-    - **Blue**: Timer is running.
-    - **White/Blinking**: Timer is reset or ready.
+- **LED Status**: **Blue** (Running), **White/Blinking** (Reset/Ready).
 
 ## 📜 License
 
@@ -148,9 +114,9 @@ MIT License. Contributions and PRs are welcome!
 ---
 
 ### Acknowledgments
-- The `NimBLE-Arduino` `Adafruit_NeoPixel`community.
-- The [`csTimer`](https://github.com/cs0x7f/cstimer) project and its excellent [GAN Timer driver](https://github.com/afedotov/gan-web-bluetooth) reference.
----
+- The `NimBLE-Arduino` and `Adafruit_NeoPixel` communities.
+- The [`csTimer`](https://github.com/cs0x7f/cstimer) project and [GAN Timer driver](https://github.com/afedotov/gan-web-bluetooth) reference.
 
+---
 This project was conceptualized by me and implemented in 2 hours with the help of AI pair programming.
 本项目由我构思，并在 AI 结对编程的辅助下耗时两小时实现。
