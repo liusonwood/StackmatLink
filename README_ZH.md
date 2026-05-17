@@ -119,5 +119,5 @@ Copyright (c) 2026 liusonwood.
 - [`csTimer`](https://github.com/cs0x7f/cstimer) 项目及 [GAN 计时器驱动代码](https://github.com/afedotov/gan-web-bluetooth)参考。
 
 ---
-This project was conceptualized by me and implemented in 2 hours with the help of AI pair programming.
-本项目由我构思，并在 AI 结对编程的辅助下耗时两小时实现。
+This project was initially conceptualized by me and implemented in 2 hours with the help of AI pair programming.
+本项目由我最初构思，并在 AI 对编程的辅助下耗时两小时实现。

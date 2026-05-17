@@ -118,5 +118,5 @@ MIT License. Contributions and PRs are welcome!
 - The [`csTimer`](https://github.com/cs0x7f/cstimer) project and [GAN Timer driver](https://github.com/afedotov/gan-web-bluetooth) reference.
 
 ---
-This project was conceptualized by me and implemented in 2 hours with the help of AI pair programming.
-本项目由我构思，并在 AI 结对编程的辅助下耗时两小时实现。
+This project was initially conceptualized by me and implemented in 2 hours with the help of AI pair programming.
+本项目由我最初构思，并在 AI 对编程的辅助下耗时两小时实现。
