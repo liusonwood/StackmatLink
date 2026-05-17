@@ -7,6 +7,8 @@
 </div>
 
 ---
+**⚠️ Security Warning:** StackmatLink is an open-source project. This is the only official repository. Be careful of fake 'clones' or 'installers' on GitHub that provide .zip or .exe files. This project is provided as source code; I will never ask you to download a setup.exe.
+---
 
 **StackmatLink** is an open-source project based on the **ESP32-S3**. It captures the analog Stackmat signals from a **GAN Halo (and other standard timers)** audio port and converts them in real-time into the **GAN Smart Timer Bluetooth Protocol**.
 
