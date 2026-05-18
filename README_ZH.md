@@ -54,7 +54,7 @@
 - **指示灯**: 板载或外接 NeoPixel (WS2812) LED。
 - **接口**: 3.5mm 音频头（Tip 信号，Sleeve 地）。
 - **电子元件**: 
-    - **10kΩ 排阻 (Resistor Network)** 或 3个 10kΩ 贴片电阻 (1个用于上拉，2个用于建立 1.65V 参考电压)。
+    - **10kΩ 排阻 (Resistor Network)**  3个 10kΩ 电阻 (1个用于上拉，2个用于建立 1.65V 参考电压)。
 
 ### 2. 电路连接 (Wiring)
 <img src="./hardware/Wiring/Wiringconnection.png" width="600" alt="电路连接图">

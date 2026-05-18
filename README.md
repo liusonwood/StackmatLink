@@ -54,7 +54,7 @@ With this project, you can bridge any standard non-Bluetooth Stackmat timer to *
 - **Status LED**: Onboard or external NeoPixel (WS2812) LED.
 - **Interface**: 3.5mm Audio Jack (Tip: Signal, Sleeve: GND).
 - **Electronic Components**: 
-    - **10kΩ Resistor Network** (or 3x 10kΩ SMD resistors: 1x pull-up, 2x voltage divider for 1.65V ref).
+    - **10kΩ Resistor Network** (3x 10kΩ resistors: 1x pull-up, 2x voltage divider for 1.65V ref).
 
 ### 2. Wiring Diagram
 <img src="./hardware/Wiring/Wiringconnection.png" width="600" alt="Wiring Diagram">
@@ -119,7 +119,8 @@ MIT License. Contributions and PRs are welcome!
 - The [`csTimer`](https://github.com/cs0x7f/cstimer) project and [GAN Timer driver](https://github.com/afedotov/gan-web-bluetooth) reference.
 
 ---
-**⚠️ Security Warning:** StackmatLink is an open-source project. This is the only official repository. Be careful of fake 'clones' or 'installers' on GitHub that provide .zip or .exe files. This project is provided as source code; I will never ask you to download a setup.exe.
+**⚠️ Security Warning:** 
+StackmatLink is an open-source project. This is the only official repository. Be careful of fake 'clones' or 'installers' on GitHub that provide .zip or .exe files. This project is provided as source code; I will never ask you to download a setup.exe.
 ---
 This project was initially conceptualized by me and implemented in 2 hours with the help of AI pair programming.
 本项目由我最初构思，并在 AI 对编程的辅助下耗时两小时实现。
