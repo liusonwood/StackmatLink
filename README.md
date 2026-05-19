@@ -51,10 +51,13 @@ With this project, you can bridge any standard non-Bluetooth Stackmat timer to *
 ### 1. Requirements (BOM)
 - **MCU**: ESP32-S3 (Tested on N16R8, PCB uses **ESP32-S3-SuperMini**, but compatible with all S3 variants).
 - **Signal Conditioning**: **LM393 Voltage Comparator (SMD/SOP-8 version)**.
-- **Status LED**: Onboard or external NeoPixel (WS2812) LED.
+- **Status LED**: Onboard or external NeoPixel (WS2812) LED. (optional)
 - **Interface**: 3.5mm Audio Jack (Tip: Signal, Sleeve: GND).
-- **Electronic Components**: 
-    - **10kΩ Resistor Network** (3x 10kΩ resistors: 1x pull-up, 2x voltage divider for 1.65V ref).
+- **Electronic Components**:
+    - 10kΩ Resistor Network (3x 10kΩ resistors: 1x pull-up, 2x voltage divider for 1.65V ref).
+    - LM393 ic
+- **PCB board**
+- **3D printed case**
 
 ### 2. Wiring Diagram
 <img src="./hardware/Wiring/Wiringconnection.png" width="600" alt="Wiring Diagram">
