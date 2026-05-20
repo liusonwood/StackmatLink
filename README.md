@@ -122,8 +122,10 @@ Since the timer outputs a weak analog audio signal (~0.7V–2.5V, sine-ish wave)
 
 ## 📜 License & Credits
 
-Copyright (c) 2026 liusonwood.
-Released under the [MIT License](./LICENSE). Contributions and PRs are always welcome!
+- **Software (Firmware)**: Licensed under the [MIT License](./LICENSE).
+- **Hardware (PCB & Case)**: Licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)](./LICENSE_HARDWARE) License. Commercial reproduction or sales of the physical hardware without prior permission are strictly prohibited.
+
+Contributions and PRs are always welcome!
 
 ## Acknowledgments
 - The `NimBLE-Arduino` and `Adafruit_NeoPixel` communities.

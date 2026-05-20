@@ -120,10 +120,12 @@
   - 🔵 **蓝色常亮**：正在计时。
   - ⚪ **白色常亮或闪烁**：计时器已重置，处于就绪状态。
 
-## 📜 开源协议
+## 📜 开源协议与版权声明
 
-Copyright (c) 2026 liusonwood.
-本项目采用 [MIT License](./LICENSE) 授权。非常欢迎提交 Issue 或 Pull Request！
+- **软件（固件）**：采用 [MIT License](./LICENSE) 授权。
+- **硬件（PCB 与外壳）**：采用 [知识共享 署名-非商业性使用-相同方式共享 4.0 国际许可协议 (CC BY-NC-SA 4.0)](./LICENSE_HARDWARE) 授权。**未经原作者许可，严禁将实体硬件进行商业生产、售卖或用于其他商业盈利用途。**
+
+非常欢迎提交 Issue 或 Pull Request 进行优化！
 
 ## 鸣谢
 - 感谢 `NimBLE-Arduino` 与 `Adafruit_NeoPixel` 社区提供的优秀库。
