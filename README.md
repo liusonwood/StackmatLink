@@ -4,7 +4,8 @@
 
 **Bridging Classic Stackmat Timers to the Wireless World**
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+[![Software License: MIT](https://img.shields.io/badge/Software-MIT-blue.svg)](./LICENSE)
+[![Hardware License: CC BY-NC-SA 4.0](https://img.shields.io/badge/Hardware-CC%20BY--NC--SA%204.0-lightgrey.svg)](./LICENSE_HARDWARE)
 [![Platform: ESP32-S3](https://img.shields.io/badge/Platform-ESP32--S3-orange.svg)]()
 [![Framework: Arduino](https://img.shields.io/badge/Framework-Arduino-00979D.svg?logo=arduino&logoColor=white)]()
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)]()
@@ -15,9 +16,9 @@
 
 ---
 
-**StackmatLink** is an open-source hardware and software project based on the **ESP32-S3**. It captures analog signals from a standard Stackmat timer's audio port (like the **GAN Halo** or other compatible timers) and seamlessly converts them into the **GAN Smart Timer Bluetooth Protocol** in real-time.
+**StackmatLink** gives your traditional timer the superpower to seamlessly enter the modern wireless ecosystem. As an open-source hardware and software solution based on the **ESP32-S3**, it precisely captures raw analog signals from the audio port of standard Stackmat timers (like the **GAN Halo** or other compatible devices) and converts them into the official **GAN Smart Timer Bluetooth Protocol** with zero latency.
 
-With StackmatLink, you can bridge any standard non-Bluetooth Stackmat timer to web applications like **csTimer** wirelessly, eliminating the need for expensive Bluetooth-native hardware.
+**No need for expensive native Bluetooth hardware**, and **no more cable clutter**. StackmatLink instantly transforms your classic non-Bluetooth timer into a smart device, syncing every solve wirelessly and flawlessly to apps like **csTimer**.
 
 ## ✨ Key Features
 
@@ -97,7 +98,11 @@ Since the timer outputs a weak analog audio signal (~0.7V–2.5V, sine-ish wave)
 ## 💻 Software & Setup
 
 1. Install the [Arduino IDE](https://www.arduino.cc/en/software).
-2. Install the `esp32` board package by Espressif.
+2. **Install the ESP32 Board Package**:
+   - Go to **File > Preferences** (or **Arduino IDE > Settings** on macOS).
+   - In the **"Additional boards manager URLs"** field, add: `https://espressif.github.io/arduino-esp32/package_esp32_index.json`
+   - Go to **Tools > Board > Boards Manager...**
+   - Search for **"esp32"** and install the package by **Espressif Systems**.
 3. Install the `NimBLE-Arduino` and `Adafruit_NeoPixel` libraries via the Arduino Library Manager.
 4. Open `stackmatlink.ino`, select your **ESP32-S3 Dev Module** (or your specific variant), and click **Upload**.
    > **Note:** If `USB CDC On Boot` is enabled on your board, use the Native USB port for serial debugging.
@@ -122,6 +127,7 @@ Since the timer outputs a weak analog audio signal (~0.7V–2.5V, sine-ish wave)
 
 ## 📜 License & Credits
 
+Copyright (c) 2026 liusonwood.
 - **Software (Firmware)**: Licensed under the [MIT License](./LICENSE).
 - **Hardware (PCB & Case)**: Licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)](./LICENSE_HARDWARE) License. Commercial reproduction or sales of the physical hardware without prior permission are strictly prohibited.
 

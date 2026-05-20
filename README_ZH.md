@@ -4,7 +4,8 @@
 
 **让经典 Stackmat 计时器拥抱无线时代**
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+[![Software License: MIT](https://img.shields.io/badge/Software-MIT-blue.svg)](./LICENSE)
+[![Hardware License: CC BY-NC-SA 4.0](https://img.shields.io/badge/Hardware-CC%20BY--NC--SA%204.0-lightgrey.svg)](./LICENSE_HARDWARE)
 [![Platform: ESP32-S3](https://img.shields.io/badge/Platform-ESP32--S3-orange.svg)]()
 [![Framework: Arduino](https://img.shields.io/badge/Framework-Arduino-00979D.svg?logo=arduino&logoColor=white)]()
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)]()
@@ -15,9 +16,9 @@
 
 ---
 
-**StackmatLink** 是一个基于 **ESP32-S3** 的开源软硬件项目。它能够通过音频口读取标准 Stackmat 计时器（例如 **GAN Halo 星环** 或其他兼容计时器）的模拟信号，并将其低延迟地实时转换为 **GAN Smart Timer 蓝牙协议**。
+**StackmatLink** 赋予传统计时器无缝接入现代无线生态的超能力。作为一个基于 **ESP32-S3** 的开源软硬件方案，它能精准捕获标准 Stackmat 计时器（如 **GAN Halo 星环** 或其他兼容设备）音频口的原始模拟信号，并以零延迟实时转换为官方 **GAN Smart Timer 蓝牙协议**。
 
-通过该项目，您可以将任何非蓝牙版标准计时器无线连接到 **csTimer** 等支持官方蓝牙计时器的应用，省去购买昂贵原厂蓝牙硬件的费用。
+**无需购买昂贵的原厂蓝牙设备**，也**无需繁琐的线缆连接**。StackmatLink 让您手中经典的非蓝牙计时器瞬间化身智能硬件，原生、无线、稳定地同步每一次成绩至 **csTimer** 等主流应用。
 
 ## ✨ 核心特性
 
@@ -97,7 +98,11 @@
 ## 💻 软件安装与设置
 
 1. 安装 [Arduino IDE](https://www.arduino.cc/en/software)。
-2. 在开发板管理器中安装由 Espressif 提供的 `esp32` 支持包。
+2. **安装 ESP32 开发板支持包**：
+   - 点击菜单栏的 **文件 > 首选项** (macOS 下为 **Arduino IDE > Settings**)。
+   - 在 **“附加开发板管理器网址”** 一栏中填入：`https://espressif.github.io/arduino-esp32/package_esp32_index.json`
+   - 点击菜单栏的 **工具 > 开发板 > 开发板管理器...**
+   - 在弹出的搜索框中输入 **"esp32"**，找到由 **Espressif Systems** 提供的包并点击安装。
 3. 在库管理器中搜索并安装 `NimBLE-Arduino` 和 `Adafruit_NeoPixel` 库。
 4. 打开 `stackmatlink.ino`，选择您的 **ESP32-S3 Dev Module**，然后点击 **上传 (Upload)**。
    > **注意**：如果在 IDE 中启用了 `USB CDC On Boot`，请确保使用 Native USB 端口进行调试输出。
@@ -108,7 +113,7 @@
 2. **确认信号**：打开 Arduino 串口监视器（设置为 `115200` 波特率）。在计时器运作时，板载指示灯将亮起 **蓝色**。
 3. **连接 csTimer**：
     - 使用浏览器打开 [csTimer.net](https://cstimer.net)（推荐 Chrome / Edge）。
-    - 依次进入 `设置` -> `计时器` -> `输入类型` -> 选择 **计时器**。
+    - 依次进入 `设置` -> `计时器` -> `输入类型` -> 选择 **蓝牙计时器**。
     - 点击 csTimer 顶部的蓝牙图标，选择名为 **"GAN-Timer"** 的设备进行配对。
 4. **开始计时**：现在，您的实体计时器状态已经与网页实现了完美同步！
 
@@ -122,6 +127,7 @@
 
 ## 📜 开源协议与版权声明
 
+Copyright (c) 2026 liusonwood.
 - **软件（固件）**：采用 [MIT License](./LICENSE) 授权。
 - **硬件（PCB 与外壳）**：采用 [知识共享 署名-非商业性使用-相同方式共享 4.0 国际许可协议 (CC BY-NC-SA 4.0)](./LICENSE_HARDWARE) 授权。**未经原作者许可，严禁将实体硬件进行商业生产、售卖或用于其他商业盈利用途。**
 
