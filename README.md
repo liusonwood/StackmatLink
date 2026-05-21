@@ -57,7 +57,7 @@ To build StackmatLink, you will need the following parts:
 | **Resistors** | 3× 10kΩ Resistors | 1× for pull-up, 2× for a 1.65V voltage divider reference. |
 | **Audio Jack** | 3.5mm Audio Jack | Tip: Signal, Sleeve: GND. |
 | **Custom PCB** | StackmatLink Board | Gerber files provided in `hardware/PCB/` for manufacturing. |
-| **Enclosure** | 3D Printed Case | STL files provided in `hardware/Case/` for 3D printing. |
+| **Enclosure** | 3D Printed Case | Optional. STL files provided in `hardware/Case/` for 3D printing. |
 
 ## 🛠️ Hardware & Build Guide
 
