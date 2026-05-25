@@ -9,6 +9,7 @@
 [![Platform: ESP32-S3](https://img.shields.io/badge/Platform-ESP32--S3-orange.svg)]()
 [![Framework: Arduino](https://img.shields.io/badge/Framework-Arduino-00979D.svg?logo=arduino&logoColor=white)]()
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)]()
+[![GitHub stars](https://img.shields.io/github/stars/liusonwood/StackmatLink)](https://github.com/liusonwood/StackmatLink/stargazers)
 
 🌐 [English](./README.md) | [简体中文](./README_ZH.md)
 
@@ -54,7 +55,7 @@
 | **微控制器 (MCU)** | ESP32-S3 | 测试基于 N16R8。PCB 采用 **ESP32-S3-SuperMini**，但兼容全系 S3。 |
 | **状态指示灯** | NeoPixel (WS2812) | 可选。SuperMini 自带板载灯，其他开发板可外接。 |
 | **电压比较器** | LM393 | 负责信号整形 (贴片/SMD/SOP-8 版本)。 |
-| **电阻** | 3× 10kΩ 电阻 | 1个用于上拉，2个用于构建 1.65V 的分压参考。 |
+| **排阻** | 3× 10kΩ 电阻 | 1个用于上拉，2个用于构建 1.65V 的分压参考。 |
 | **音频接口** | 3.5mm 音频母座 | Tip (尖端) 接信号，Sleeve (套筒) 接地。 |
 | **定制 PCB** | StackmatLink 专属电路板 | 包含在 `hardware/PCB/` 中的 Gerber 文件，可直接打样。 |
 | **设备外壳** | 3D 打印外壳 | 可选。包含在 `hardware/Case/` 中的 STL 模型文件，可直接 3D 打印。 |
