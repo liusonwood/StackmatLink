@@ -55,7 +55,7 @@ To build StackmatLink, you will need the following parts:
 | **MCU** | ESP32-S3 | Tested on N16R8. Custom PCB uses **ESP32-S3-SuperMini**, but compatible with all S3 variants. |
 | **Status LED** | NeoPixel (WS2812) | Optional. Onboard on the SuperMini or externally wired. |
 | **Comparator IC** | LM393 | Voltage Comparator (SMD/SOP-8 version). |
-| **Resistor Network ** | 3× 10kΩ Resistors | 1× for pull-up, 2× for a 1.65V voltage divider reference. |
+| **Resistor Network** | 3× 10kΩ Resistors | 1× for pull-up, 2× for a 1.65V voltage divider reference. |
 | **Audio Jack** | 3.5mm Audio Jack | Tip: Signal, Sleeve: GND. |
 | **Custom PCB** | StackmatLink Board | Gerber files provided in `hardware/PCB/` for manufacturing. |
 | **Enclosure** | 3D Printed Case | Optional. STL files provided in `hardware/Case/` for 3D printing. |
